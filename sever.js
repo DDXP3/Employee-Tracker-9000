@@ -10,7 +10,7 @@ const db = mysql.createConnection(
     {
         host: 'localhost',
         user: 'root',
-        password: '',
+        password: '@769Bananas',
         database: 'tacker_db'
     },
     console.log('Connected')

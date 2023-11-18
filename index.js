@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
-const db = require('./sever')
+// const express = require('express');
+
 
 const start = {
     type: 'list',
@@ -12,6 +13,9 @@ const start = {
         "add a department", 
         "add a role", 
         "add an employee", 
+        "remove a department",
+        "remove a role",
+        "remove an employee",
         "update an employee role"
     ]
 };
@@ -64,52 +68,86 @@ const emp = [
 ];
 
 function output (responses){
+    const db = require('./sever');
+
     if (responses == "view all departments"){
         db.query('SELECT * FROM tacker_db.department', function (err, results){
-            console.log(results);
+            console.table(results);
         });
     }
 
     else if (responses == "view all roles"){
         db.query('SELECT * FROM tacker_db.role', function (err, results){
-            console.log(results);
+            console.table(results);
         });
     }
 
     else if (responses == "view all employees"){
         db.query('SELECT * FROM tacker_db.employee', function (err, results){
-            console.log(results);
+            console.table(results);
         });
     }
 
     else if (responses == "add a department"){
         inquirer.prompt(dep).then(res => {
-            console.log(res);
-        })
-        db.query(`INSERT INTO department (name) VALUES(${res})`, 
+            console.table(res);
+            db.query(`INSERT INTO department (name) VALUES("${res.name}")`, 
         function (err, results){
             console.log(results);
         });
+        })
     }
 
     else if (responses == "add a role"){
         inquirer.prompt(rol).then(res => {
             console.log(res);
-        })
-        db.query(`INSERT INTO role (title, salary, department_id) VALUES${res}`, 
+            db.query(`INSERT INTO role (title, salary, department_id) 
+            VALUES("${res.title}", ${res.salary}, ${res.depId})`, 
         function (err, results){
             console.log(results);
         });
+        })
     }
 
     else if (responses == "add an employee"){
         inquirer.prompt(emp).then(res => {
             console.log(res);
-        })
-        db.query(`INSERT INTO employess (first_name, last_name, role_id, manager_id) VALUES${res}`, 
+            db.query(`INSERT INTO employess (first_name, last_name, role_id, manager_id) 
+            VALUES("${res.firnam}", "${res.lasnam}", ${res.role}, ${res.manager})`, 
         function (err, results){
             console.log(results);
         });
+        })
+    }
+
+    else if (responses == "remove a department"){
+        inquirer.prompt(remdep).then(res => {
+            console.table(res);
+            db.query(`DELETE FROM tacker_db.department WHERE id = ${res};")`, 
+        function (err, results){
+            console.log(results);
+        });
+        })
+    }
+
+    else if (responses == "remove a role"){
+        inquirer.prompt(remrol).then(res => {
+            console.log(res);
+            db.query(`DELETE FROM tacker_db.department WHERE id = ${res};`, 
+        function (err, results){
+            console.log(results);
+        });
+        })
+    }
+
+    else if (responses == "remove an employee"){
+        inquirer.prompt(rememp).then(res => {
+            console.log(res);
+            db.query(`DELETE FROM tacker_db.department WHERE id = ${res};)`, 
+        function (err, results){
+            console.log(results);
+        });
+        })
     }
 
     else if (responses == "update an employee role"){
@@ -122,9 +160,8 @@ function output (responses){
 function main (){
     inquirer.prompt(start).then(responses => {
         console.log(responses.welcome);
+        (output(responses.welcome))
     });
     }
     
     main();
-
-    // output(responses.welcome);
