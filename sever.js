@@ -16,8 +16,8 @@ const db = mysql.createConnection(
     console.log('Connected')
 );
 
-app.listen(PORT, () => {
-    console.log(`Hey, I'm listening to you from port ${PORT}`)
-});
+// app.listen(PORT, () => {
+//     console.log(`Hey, I'm listening to you from port ${PORT}`)
+// });
 
 module.exports = db;
